@@ -35,9 +35,7 @@ pipeline {
          stage('Quality Gate') {
       steps {
         script {
-          waitForQualityGate abortPipeline: false, credentialsId: 'jenkinssonar' {
-            sh "mvn sonar:sonar"
-      }
+          waitForQualityGate abortPipeline: false, credentialsId: 'jenkinssonar' 
     }
   }
 }
