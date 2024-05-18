@@ -50,7 +50,7 @@ pipeline {
       steps {
         script {
           // Use Jenkins credentials for Docker login
-          withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
             // Build Docker Image
             sh """
               docker build -t ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG} .
