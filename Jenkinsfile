@@ -4,6 +4,12 @@ pipeline {
     jdk 'Java17'
     maven 'Maven3.9.6'
   }
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
+    DOCKER_REGISTRY = 'chandan077'
+    DOCKER_IMAGE = 'registration-app'
+    DOCKER_TAG = "${BUILD_NUMBER}"
+  }
   stages {
     stage('Cleanup Workspace') {
       steps {
@@ -38,6 +44,24 @@ pipeline {
       steps {
         script {
           waitForQualityGate abortPipeline: false, credentialsId: 'jenkinssonar'
+        }
+      }
+    }
+    stage('Docker Build and Push') {
+      steps {
+        script {
+          // Build Docker Image
+          sh """
+            docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG} .
+          """
+          // Login to Docker Registry
+          sh """
+            echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin ${DOCKER_REGISTRY}
+          """
+          // Push Docker Image
+          sh """
+            docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}
+          """
         }
       }
     }
