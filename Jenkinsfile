@@ -32,10 +32,14 @@ pipeline {
             sh "mvn sonar:sonar"
           }
         }
-         stage('Quality Gate') {
+      }
+    }
+    stage('Quality Gate') {
       steps {
         script {
-          waitForQualityGate abortPipeline: false, credentialsId: 'jenkinssonar' 
+          waitForQualityGate abortPipeline: false, credentialsId: 'jenkinssonar'
+        }
+      }
     }
   }
 }
