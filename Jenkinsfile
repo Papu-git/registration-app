@@ -10,11 +10,11 @@ pipeline {
     IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
   }
   stages {
-    stage('Cleanup Workspace') {
+   :' stage('Cleanup Workspace') {
       steps {
         cleanWs()
       }
-    }
+    } '
     stage('Checkout from SCM') {
       steps {
         git branch: 'dev', credentialsId: 'github', url: 'https://github.com/Papu-git/registration-app/'
@@ -27,7 +27,7 @@ pipeline {
     }
     stage('Build Application') {
       steps {
-        sh "mvn clean package"
+        sh "mvn package"
       }
     }
     stage('Test Application') {
