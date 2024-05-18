@@ -11,6 +11,7 @@ pipeline {
     DOCKER_PASS = 'Papu@1234'
     IMAGE_NAME = '${DOCKER_USER}' + '/' + "${APP_NAME}
     IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    DOCKER_TAG = "{BUILD_NUMBER}"
   }
   stages {
     stage('Cleanup Workspace') {
@@ -54,7 +55,7 @@ pipeline {
         script {
           // Build Docker Image
           sh """
-            docker build -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG} .
+            docker build -t ${DOCKER_USER}/${DOCKER_IMAGE}:${DOCKER_TAG} .
           """
           // Login to Docker Registry
           sh """
