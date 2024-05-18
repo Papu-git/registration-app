@@ -7,11 +7,7 @@ pipeline {
   environment {
     APP_NAME = 'registration-app'
     RELEASE = '1.0.0'
-    DOCKER_USER = 'chandan077'
-    DOCKER_PASS = 'Papu@1234'
-    IMAGE_NAME = '${DOCKER_USER}' + '/' + "${APP_NAME}
     IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-    DOCKER_TAG = "{BUILD_NUMBER}"
   }
   stages {
     stage('Cleanup Workspace') {
@@ -53,18 +49,21 @@ pipeline {
     stage('Docker Build and Push') {
       steps {
         script {
-          // Build Docker Image
-          sh """
-            docker build -t ${DOCKER_USER}/${DOCKER_IMAGE}:${DOCKER_TAG} .
-          """
-          // Login to Docker Registry
-          sh """
-            echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin ${DOCKER_REGISTRY}
-          """
-          // Push Docker Image
-          sh """
-            docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}
-          """
+          // Use Jenkins credentials for Docker login
+          withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+            // Build Docker Image
+            sh """
+              docker build -t ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG} .
+            """
+            // Login to Docker Registry
+            sh """
+              echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin
+            """
+            // Push Docker Image
+            sh """
+              docker push ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG}
+            """
+          }
         }
       }
     }
