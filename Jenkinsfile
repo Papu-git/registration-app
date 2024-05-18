@@ -20,6 +20,11 @@ pipeline {
         git branch: 'dev', credentialsId: 'github', url: 'https://github.com/Papu-git/registration-app/'
       }
     }
+    stage('Print Working Directory') {
+      steps {
+        sh 'pwd'
+      }
+    }
     stage('Build Application') {
       steps {
         sh "mvn clean package"
@@ -43,6 +48,14 @@ pipeline {
       steps {
         script {
           waitForQualityGate abortPipeline: false, credentialsId: 'jenkinssonar'
+        }
+      }
+    }
+    stage('Verify Build Artifacts') {
+      steps {
+        script {
+          // Print the contents of the target directory to ensure the .war file is present
+          sh "ls -la target"
         }
       }
     }
