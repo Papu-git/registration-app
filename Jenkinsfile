@@ -5,10 +5,12 @@ pipeline {
     maven 'Maven3.9.6'
   }
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
-    DOCKER_REGISTRY = 'chandan077'
-    DOCKER_IMAGE = 'registration-app'
-    DOCKER_TAG = "${BUILD_NUMBER}"
+    APP_NAME = 'registration-app'
+    RELEASE = '1.0.0'
+    DOCKER_USER = 'chandan077'
+    DOCKER_PASS = 'Papu@1234'
+    IMAGE_NAME = '${DOCKER_USER}' + '/' + "${APP_NAME}
+    IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
   }
   stages {
     stage('Cleanup Workspace') {
