@@ -6,7 +6,7 @@ RUN apt-get update && apt-get -y upgrade
 
 WORKDIR /usr/local/tomcat
 
-COPY /home/ubuntu/workspace/Register-app/webapp/target/webapp.war /usr/local/tomcat/webapps/
+COPY /home/ubuntu/workspace/Register-app/*war /usr/local/tomcat/webapps/
 
 EXPOSE 8080
 
