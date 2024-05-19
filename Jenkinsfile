@@ -10,11 +10,11 @@ pipeline {
     IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
   }
   stages {
-   // stage('Cleanup Workspace') {
-     // steps {
-       // cleanWs()
-      // }
-    // } '
+    // stage('Cleanup Workspace') {
+    //   steps {
+    //     cleanWs()
+    //   }
+    // }
     stage('Checkout from SCM') {
       steps {
         git branch: 'dev', credentialsId: 'github', url: 'https://github.com/Papu-git/registration-app/'
@@ -75,6 +75,22 @@ pipeline {
             // Push Docker Image
             sh """
               docker push ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG}
+            """
+          }
+        }
+      }
+    }
+    stage('Trivy Scan') {
+      steps {
+        script {
+          withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASS', usernameVariable: 'DOCKER_USER')]) {
+            // Pull the Docker Image
+            sh """
+              docker pull ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG}
+            """
+            // Run Trivy scan
+            sh """
+              docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG}
             """
           }
         }
