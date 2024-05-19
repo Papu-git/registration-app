@@ -109,5 +109,18 @@ pipeline {
         }
       }
     }
+    stage('Trigger CD pipeline') {
+      steps {
+        script {
+          // Trigger the downstream CD pipeline via Jenkins API
+          withCredentials([string(credentialsId: 'jenkins-api-token', variable: 'JENKINS_API_TOKEN')]) {
+            sh """
+              curl -v -k --user admin:${JENKINS_API_TOKEN} -X POST "http://ec2-13-127-0-86.ap-south-1.compute.amazonaws.com/job/gitops-register-app-cd/buildWithParameters?APP_NAME=${APP_NAME}&IMAGE_TAG=${IMAGE_TAG}"
+            """
+          }
+        }
+      }
+    }
   }
 }
+
