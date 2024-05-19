@@ -96,5 +96,18 @@ pipeline {
         }
       }
     }
+    stage('Cleanup Artifacts') {
+      steps {
+        script {
+          // Remove the Docker image to free up space
+          sh """
+            docker rmi ${DOCKER_USER}/${APP_NAME}:${IMAGE_TAG} || true
+          """
+          // Additional cleanup commands can be added here
+          // For example, clean the workspace
+          // cleanWs()
+        }
+      }
+    }
   }
 }
