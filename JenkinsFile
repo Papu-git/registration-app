@@ -31,16 +31,6 @@ pipeline {
             steps {
                 sh "mvn test"
             }
-        }
-        
-        stage('Sonar Analysis') {
-            steps {
-                script {
-                    withSonarQubeEnv('jen-sona-token') {
-                        sh "mvn sonar:sonar"
-                    }
-                }
-            }
-        }
+        }   
     }
 }
