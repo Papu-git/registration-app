@@ -5,13 +5,13 @@ maven 'Maven 3.9.6'
 jdk 'JAVA17'
 }
 stages {
-stage{
-steps ('Clean Workspace'){
+stage('Clean Workspace'){
+steps {
 cleanWs()
 }
 }
-stage{
-steps ('GIT checkout'){
+stage ('GIT checkout'){
+steps {
 git branch: 'QA', credentialsId: 'github-accesss', url: 'https://github.com/Papu-git/registration-app.git'
 }
 }
