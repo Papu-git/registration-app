@@ -31,5 +31,11 @@ pipeline {
               sh "mvn test"
        }
      }
+     stage ('Soanr Analysis'){
+        steps{
+        withSonarQubeEnv(credentialsId: 'jen-sona-token'
+         )
+       }  
+     }
    }
 }
