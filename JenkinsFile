@@ -21,6 +21,10 @@ pipeline {
             }
         }
         
-        // Additional stages can be added here as needed
-    }
+        stages('maven package'){
+            steps{
+                sh "mvn:package"
+         }
+      }
+   }
 }
