@@ -21,32 +21,34 @@ pipeline {
             }
         }
         
-        stage('maven package'){
-            steps{
+        stage('Maven Package') {
+            steps {
                 sh "mvn package"
-         }
-      }
-      stage ('maven test'){
-          steps{
-              sh "mvn test"
-       }
-     }
-     stage ('Soanr Analysis'){
-        steps{
-         script{
-        withSonarQubeEnv(credentialsId: 'jen-sona-token'){
-          sh "mvn sonar:sonar"
-             }
-          }
-       }  
-   }
-  #  stage ('Sonar Quality Gate'){
-   #  steps{
-    #   script{
-    #   waitForQualityGate abortPipeline: false, credentialsId: 'jen-sona-token'}
-     #      }
-      #  }
+            }
+        }
+        
+        stage('Maven Test') {
+            steps {
+                sh "mvn test"
+            }
+        }
+        
+        stage('Sonar Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('jen-sona-token') {
+                        sh "mvn sonar:sonar"
+                    }
+                }
+            }
+        }
+        
+        stage('Sonar Quality Gate') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false
+                }
+            }
+        }
     }
 }
-
-
