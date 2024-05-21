@@ -37,7 +37,7 @@ pipeline {
         withSonarQubeEnv(credentialsId: 'jen-sona-token'){
           sh "mvn sonar:sonar"
              }
-          )
+          }
        }  
    }
 }
