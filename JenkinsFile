@@ -6,7 +6,7 @@ jdk 'JAVA17'
 }
 stages {
 stage{
-steps (Clean Workspace){
+steps ('Clean Workspace'){
 clean Ws()
 }
 }
