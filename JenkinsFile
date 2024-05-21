@@ -33,7 +33,9 @@ pipeline {
      }
      stage ('Soanr Analysis'){
         steps{
+         script{
         withSonarQubeEnv(credentialsId: 'jen-sona-token'
+             }
          )
        }  
      }
