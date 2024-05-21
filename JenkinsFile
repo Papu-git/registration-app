@@ -31,6 +31,13 @@ pipeline {
             steps {
                 sh "mvn test"
             }
-        }   
+        }
+stage ('Docker login'){
+   steps {
+withDockerRegistry(credentialsId: 'Dockerhubcred', url: 'https://hub.docker.com/') {
+    // some block
+}
+
     }
 }
+}}
