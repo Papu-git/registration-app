@@ -1,0 +1,15 @@
+Pipeline{
+agent ('Jenkins-Agent')
+tools {
+maven 'Maven 3.9.6'
+jdk 'JAVA17'
+}
+stages {
+steps (Clean Workspace){
+clean Ws()
+}
+}
+steps ('GIT checkout'){
+git branch: 'QA', credentialsId: 'github-accesss', url: 'https://github.com/Papu-git/registration-app.git'
+}
+}
